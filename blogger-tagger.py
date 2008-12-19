@@ -1,3 +1,9 @@
+#!/usr/bin/pyton
+""""
+blogger-tagger 
+
+"""
+
 from gdata import service
 import sys
 import gdata
@@ -10,7 +16,6 @@ def AuthenticateSession(username,password):
     blogger_service.server = 'www.blogger.com'
     blogger_service.ProgrammaticLogin()
     return blogger_service
-
 
 def PrintUserBlogInfo(blogger_service):
     query = service.Query()
@@ -67,10 +72,30 @@ def CreatePublicPost(blogger_service, blog_id, title, content):
     #entry.categories = [category,category2]
     return blogger_service.Post(entry, '/feeds/%s/posts/default' % blog_id)
 
-blogger_service = AuthenticateSession(username,password)
-feed = GetBlogFeed(blogger_service)
-blog_id = GetBlogId(feed)
-#PrintAllPosts(blogger_service,blog_id)
-blogEntry = CreatePublicPost(blogger_service, blog_id, 
-  title='I have another answer', content='Eureka! It is 42!')
+def createoldpublicpost(blogger_service, blog_id, title, content, published, updated):
+    entry = gdata.gdataentry()
+    entry.title = atom.title('xhtml', title)
+    entry.published = atom.published(published)
+    entry.updated = atom.updated(updated)
+    entry.content = atom.content(content_type='html', text=content)
+    print entry
+    return blogger_service.post(entry, '/feeds/%s/posts/default' % blog_id)
+    
+def CreateDraftPost(blogger_service, blog_id, title, content):
+    entry = gdata.GDataEntry()
+    entry.title = atom.Title('xhtml', title)
+    entry.content = atom.Content(content_type='html', text=content)
+    control = atom.Control()
+    control.draft = atom.Draft(text='yes')
+    entry.control = control
+    
+def main():
+    blogger_service = AuthenticateSession(username,password)
+    feed = GetBlogFeed(blogger_service)
+    blog_id = GetBlogId(feed)
+    #PrintAllPosts(blogger_service,blog_id)
+    #blogEntry = CreatePublicPost(blogger_service, blog_id, title='I have another answer', content='Eureka! It is 42!')
+      
+if __name__ == "__main__":
+    main()
 

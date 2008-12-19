@@ -1,0 +1,41 @@
+blogger-tagger aims to be a script that auto-tags
+blog posts from blogger. 
+
+December 19, 2008 my current todos for this project are
+
+ - get better authentication interface working
+ 
+ - upload old blog posts from vox
+    - figure out how to add one old blog post
+    - write code to read blog post from pickled archive
+
+
+- upload old blog posts from mulvany.net    
+
+
+- write basic tag parser
+
+
+- add tags to blogger enclosure using lables
+
+
+- modify old blog posts without altering posting date
+    and insert tags from tag parser
+
+
+- keep track of date that last post was taggered
+
+
+- provide optparse options for the script
+
+
+- provide option to add to tag vocab
+   the tagger parser should look for words from 
+   a user supplied dictionary, for hashtags and wiki tags
+   and by using a tf-idf algorithm
+
+   one should have the option to only tagger new posts
+   or to retagger all posts based on a new or incrementaly 
+   new tag dictionary
+
+- provide option 
