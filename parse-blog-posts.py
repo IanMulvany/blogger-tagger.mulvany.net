@@ -184,7 +184,7 @@ def upload_feeds(feeds):
             print 'creating new entry on blogger: ', title
 
 
-def tmp()
+def tmp():
     print 'getting blogger access'
     # get access to blogger version of partially attended
     username = 'username'
@@ -207,15 +207,36 @@ def tmp()
     e_tags = []
     CreatePublicPost(blogger_service, p_blog_id, title, uContent2, e_tags, published, updated)
         
+
+def check_options(options):
+    if options.user == None or options.password == None:     
+        error = "you need to specify a username and password"
+        return error
+    else:
+        return False
+
+def parse_options():
+    usage = "script -u username -p password [-h help]"
+    version = "0.0.1"
+    parser = OptionParser(usage=usage,version=version)
+    parser.add_option("-u","--user",dest="user",help="provide google account username")
+    parser.add_option("-p","--password",dest="password",help="provide google account password")
+    (options, args) = parser.parse_args()
+    error = check_options(options) # check passed options for any errors 
+    if error:
+        parser.error(error)
+    else:
+        return options
+
 def main():
-    feeds = ["http://partiallyattended.vox.com/library/posts/2008/06/atom-full.xml"]
-    dirname = "/Users/ian/Documents/p/partiallyattended/posts/"
-    unpackLocalFeeds(dirname,feeds)
-    
-    
-if __name__ == "__main__":
-    main()
-        
+    options = parse_options()
+    username = options.user
+    password = options.password
+    print username
+    print password
+    #feeds = ["http://partiallyattended.vox.com/library/posts/2008/06/atom-full.xml"]
+    #dirname = "/Users/ian/Documents/p/partiallyattended/posts/"
+    #unpackLocalFeeds(dirname,feeds)
     
 if __name__ == "__main__":
     main()

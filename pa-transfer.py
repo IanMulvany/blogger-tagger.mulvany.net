@@ -1,6 +1,9 @@
 # the aim of this script to to transfer content from
 # my vox site to my google hosted blog
 
+import sys
+from optparse import OptionParser, OptionGroup
+
 from gdata import service
 import sys
 import gdata
@@ -29,8 +32,8 @@ def PrintUserBlogInfo(blogger_service):
 def GetBlogFeed(blogger_service):
     query = service.Query()
     query.feed = "/feeds/default/blogs"
-   feed = blogger_service.Get(query.ToUri())
-   return feed
+    feed = blogger_service.Get(query.ToUri())
+    return feed
 
 def GetBlogIdZillertal(feed):
        blog_id = feed.entry[0].GetSelfLink().href.split("/")[-1]
@@ -142,11 +145,34 @@ def temp{}:
     content = entry['content'][0]['value']
     print content
     print 'creating new entry on blogger'
-    CreateOldPublicPost(blogger_service,p_blog_id,title,content,published,updated)
-    
+    CreateOldPublicPost(blogger_service,p_blog_id,title,content,published,updated) 
 
-def main():       
-    
+def check_options(options):
+    if options.user == None or options.password == None:     
+        error = "you need to specify a username and password"
+        return error
+    else:
+        return False
+
+def parse_options():
+    usage = "script -u username -p password [-h help]"
+    version = "0.0.1"
+    parser = OptionParser(usage=usage,version=version)
+    parser.add_option("-u","--user",dest="user",help="provide google account username")
+    parser.add_option("-p","--password",dest="password",help="provide google account password")
+    (options, args) = parser.parse_args()
+    error = check_options(options) # check passed options for any errors 
+    if error:
+        parser.error(error)
+    else:
+        return options
+
+def main():
+    options = parse_options()
+    username = options.user
+    password = options.password
+    print username
+    print password
     feed = feeds[0]
     print 'getting vox data'
     d = feedparser.parse(feed)

@@ -4,6 +4,11 @@ blogger-tagger
 
 """
 
+
+import sys
+from optparse import OptionParser, OptionGroup
+
+
 from gdata import service
 import sys
 import gdata
@@ -89,10 +94,37 @@ def CreateDraftPost(blogger_service, blog_id, title, content):
     control.draft = atom.Draft(text='yes')
     entry.control = control
     
+    
+
+def check_options(options):
+    if options.user == None or options.password == None:     
+        error = "you need to specify a username and password"
+        return error
+    else:
+        return False
+
+def parse_options():
+    usage = "script -u username -p password [-h help]"
+    version = "0.0.1"
+    parser = OptionParser(usage=usage,version=version)
+    parser.add_option("-u","--user",dest="user",help="provide google account username")
+    parser.add_option("-p","--password",dest="password",help="provide google account password")
+    (options, args) = parser.parse_args()
+    error = check_options(options) # check passed options for any errors 
+    if error:
+        parser.error(error)
+    else:
+        return options
+
 def main():
-    blogger_service = AuthenticateSession(username,password)
-    feed = GetBlogFeed(blogger_service)
-    blog_id = GetBlogId(feed)
+    options = parse_options()
+    username = options.user
+    password = options.password
+    print username
+    print password
+    #blogger_service = AuthenticateSession(username,password)
+    #feed = GetBlogFeed(blogger_service)
+    #blog_id = GetBlogId(feed)
     #PrintAllPosts(blogger_service,blog_id)
     #blogEntry = CreatePublicPost(blogger_service, blog_id, title='I have another answer', content='Eureka! It is 42!')
       
